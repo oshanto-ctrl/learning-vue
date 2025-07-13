@@ -14,33 +14,33 @@
 // 3. Take out the trash
 
 
-// function walkDog(callback){
-//     setTimeout( () => {
-//         console.log("You Walk the dog. VowVow!!");
-//         callback(); // invoke callback
-//     }, 1500);
-// }
+function walkDog(callback){
+    setTimeout( () => {
+        console.log("You Walk the dog. VowVow!!");
+        callback(); // invoke callback
+    }, 1500);
+}
 
-// function cleanKitchen(callback){
-//     setTimeout( () => {
-//         console.log("You clean the kitchen. kitchin!!");
-//         callback();
-//     }, 2500);
-// }
+function cleanKitchen(callback){
+    setTimeout( () => {
+        console.log("You clean the kitchen. kitchin!!");
+        callback();
+    }, 2500);
+}
 
-// function takeOutTrash(callback){
-//     setTimeout( () => {
-//         console.log("You take out the trash. Garbageing!!");
-//         callback();
-//     }, 500);
-// }
+function takeOutTrash(callback){
+    setTimeout( () => {
+        console.log("You take out the trash. Garbageing!!");
+        callback();
+    }, 500);
+}
 
-// // Callback Hell: Not good when there are many callback => Instead use promise.
-// walkDog(() => {
-//     cleanKitchen( () => {
-//         takeOutTrash( () => console.log("You finished all the chores!"));
-//     });
-// });
+// Callback Hell: Not good when there are many callback => Instead use promise.
+walkDog(() => {
+    cleanKitchen( () => {
+        takeOutTrash( () => console.log("You finished all the chores!"));
+    });
+});
 
 /* Using Promise(resolve, reject) */
 
@@ -51,7 +51,7 @@
 function doHomework(){
     return new Promise( (resolve, reject) => {
         setTimeout( () => {
-            const hwDone = false;
+            const hwDone = true; // This false means will not proceed other promises.
             if (hwDone){
                 resolve("You completed the homework!");
             } else {
