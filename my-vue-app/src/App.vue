@@ -6,7 +6,7 @@
   
   const product = ref("Socks")
   const image = ref(greenSocksImage)
-  const inStock = ref(true)
+  const inStock = ref(false)
   const inventory = ref(12)
   const onSale = ref(true)
   const details = ref(['50% Cotton', '30% wool', '20% polyester'])
@@ -37,9 +37,6 @@
   const updateImage = (variantImage) => {
     image.value = variantImage
   }
-
-
-
 </script>
 
 <template>
@@ -48,7 +45,9 @@
     <div class="cart">Cart({{ cart }})</div>
     <div class="product-display">
       <div class="product-container">
-        <div class="product-image">
+        <div class="product-image"
+          :class="{'out-of-stock-img': !inStock}"
+        >
           <img :src="image" alt="High Quality Socks">
         </div>
         
@@ -104,6 +103,7 @@
            <button class="button"
            v-if="cart > 0"
            @click="removeFromCart"
+           :style="{ color: red}"
            >Remove Item
            </button>
            <!-- 
