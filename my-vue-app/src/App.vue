@@ -1,18 +1,29 @@
 <script setup>
   // Logic, state
-  import { ref } from 'vue'
+  import { ref, computed } from 'vue'
   import greenSocksImage from './assets/images/socks_green.jpeg'
   import blueSocksImage from './assets/images/socks_blue.jpeg'
   
-  const product = ref("Socks")
-  const image = ref(greenSocksImage)
-  const inStock = ref(false)
-  const inventory = ref(12)
+  const product = ref('Socks')
+  const brand = ref("Vue Mastery")
+
+  const p_title = computed(() => {
+      return brand.value + ' ' + product.value 
+  })
+  
+  // const image = ref(greenSocksImage)
+
+  // const inStock = ref(true)
+
+  // const inventory = ref(12)
   const onSale = ref(true)
+
   const details = ref(['50% Cotton', '30% wool', '20% polyester'])
+
+  const selectedVariant = ref(0)
   const variants = ref([
-    { id: 2234, color: 'green', image: greenSocksImage},
-    { id: 2235, color: 'blue', image: blueSocksImage},
+    { id: 2234, color: 'green', image: greenSocksImage, quantity: 52},
+    { id: 2235, color: 'blue', image: blueSocksImage, quantity: 0},
   ])
   const sizes = ref([
     {id: 's', size: 'Small'},
@@ -34,9 +45,23 @@
   
   
   // UpdateImage() on hover
-  const updateImage = (variantImage) => {
-    image.value = variantImage
+  const updateVariant = (index) => {
+    selectedVariant.value = index
+    // console.log(index)
   }
+
+  const image = computed(() => {
+    return variants.value[selectedVariant.value].image
+  });
+
+  const inStock = computed(() => {
+    return variants.value[selectedVariant.value].quantity > 0
+  })
+
+  const saleMessage = computed(() => {
+    return `${p_title.value} is on sale!`
+  })
+
 </script>
 
 <template>
@@ -52,7 +77,14 @@
         </div>
         
         <div class="product-info">
-          <h1>{{ product }}</h1>
+          <h1>{{ p_title }}</h1>
+          <p v-if="inStock">In Stock</p>
+          <p v-else>Out of Stock</p>
+
+          
+          <!-- On sale Message -->
+          <p v-if="onSale">{{ saleMessage }}</p>
+          
           <!-- Product Details -->
           <ul>
               <li v-for="detail in details">{{ detail }}</li>
@@ -60,30 +92,33 @@
 
           <!-- Socks available color list -->
           <div 
-            v-for="variant in variants" 
+            v-for="(variant, index) in variants" 
             :key="variant.id"
-            @mouseover="updateImage(variant.image)"
+            @mouseover="updateVariant(index)"
             class="color-circle"
             :style="{ backgroundColor: variant.color}"
             >
           </div>
 
-          <!-- Socks availabel sizes -->
+          <!-- Socks availabel sizes 
             <p>Found your pair in size of: </p>
             <div v-for="size in sizes" :key="sizes.id">
                 <span>{{ size.size }}</span>
             </div>
+            -->
 
-          <p v-show="onSale">On Winter Sale!!!</p>
+
+          
+          
           <!--
           <p v-if="inStock">In Stock</p>
           <p v-else>Out of Stock</p>
           -->
           <!-- <p v-show="inStock">In Stock</p> -->
-          <p v-if="inventory > 20">Available in stock.</p>
-          <p v-else-if="inventory <= 20 && inventory > 0">Ending soon! collect yours.</p>
-          <p v-else>Sorry, Out of Stock!</p>
-            
+          
+          
+          
+          
           <!-- Add to cart button -->
           <!--
             v-on is directive
@@ -93,10 +128,11 @@
 
             v-on shorthand is @click="addToCart"
           -->
-          <button class="button"
+          <button 
+            class="button"
             :class="{ disabledButton: !inStock}"
-            v-on:click="addToCart"
             :disabled="!inStock"
+            v-on:click="addToCart"
           >Add to Cart</button>
           
           <!-- Remove from cart -->
