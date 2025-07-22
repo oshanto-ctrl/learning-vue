@@ -6,7 +6,7 @@
   
   const product = ref("Socks")
   const image = ref(greenSocksImage)
-  // const inStock = ref(false)
+  const inStock = ref(true)
   const inventory = ref(12)
   const onSale = ref(true)
   const details = ref(['50% Cotton', '30% wool', '20% polyester'])
@@ -64,7 +64,9 @@
             v-for="variant in variants" 
             :key="variant.id"
             @mouseover="updateImage(variant.image)"
-            >{{ variant.color }}
+            class="color-circle"
+            :style="{ backgroundColor: variant.color}"
+            >
           </div>
 
           <!-- Socks availabel sizes -->
@@ -92,23 +94,25 @@
 
             v-on shorthand is @click="addToCart"
           -->
-          <button class="button" 
+          <button class="button"
+            :class="{ disabledButton: !inStock}"
             v-on:click="addToCart"
+            :disabled="!inStock"
           >Add to Cart</button>
           
-          <!-- Remove from cart
+          <!-- Remove from cart -->
            <button class="button"
            v-if="cart > 0"
            @click="removeFromCart"
-           >Remove from Cart
+           >Remove Item
            </button>
-            -->
+           <!-- 
            <button class="button"
            @click="handleCartRemover"
            >
            Remove from Cart
            </button>
-
+          -->
         </div>
       </div>
     </div>
