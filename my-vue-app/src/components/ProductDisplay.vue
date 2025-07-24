@@ -7,6 +7,8 @@ import { ref, computed } from "vue";
 import greenSocksImage from "@/assets/images/socks_green.jpeg";
 import blueSocksImage from "@/assets/images/socks_blue.jpeg";
 import ProductDetails from "./ProductDetails.vue";
+import ReviewForm from "./ReviewForm.vue";
+import ReviewList from "./ReviewList.vue";
 
 
 // prop intro:
@@ -90,6 +92,17 @@ const shipping = computed(() => {
     return 2.99;
   }
 });
+
+
+
+// Add reviews
+const reviews = ref([])
+const addReview = (review) =>{
+  reviews.value.push(review)
+}
+
+
+
 </script>
 
 <!-- Templtaes -->
@@ -175,5 +188,10 @@ const shipping = computed(() => {
           
       </div>
     </div>
+    <!-- Review List -->
+     <ReviewList v-if="reviews.length > 0" :reviews="reviews"></ReviewList>
+    <!-- Review Form -->
+     <ReviewForm @review-submitted="addReview"></ReviewForm>
+
   </div>
 </template>
