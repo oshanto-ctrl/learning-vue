@@ -1,48 +1,46 @@
 <!-- Template -->
 <template>
 
-<!-- Heading -->
-<h1>Yours' ToDo</h1>
+  <div>
+    <!-- Center: ToDo & Done List -->
+    <main>
 
-<!-- Input Form for todos -->
- <form @submit.prevent="addTodo()">
-  <label>New Todo</label>
-  <input 
-  type="text"
-  name="newTodo"
-  autocomplete="off"
-  autocorrect="on"
-  v-model="newTodo"
-  >
+      <ClockWidget/>
 
-  <button>Add ToDo</button>
- </form>
+      <h1>Yours' ToDo</h1>
+      <form @submit.prevent="addTodo()">
+        <label>New Todo</label>
+        <input 
+          type="text"
+          name="newTodo"
+          autocomplete="off"
+          autocorrect="on"
+          v-model="newTodo"
+        >
+        <button>Add ToDo</button>
+      </form>
+      <h2>ToDo Bucket</h2>
+      <ul>
+        <li v-for="(todo, index) in todos" :key="index">
+          <span :class="{done: todo.done }">{{ todo.content }}</span>
+          <div>
+            <button @click="markDone(index)">Done</button>
+            <button @click="removeTodo(index)">Remove</button>
+          </div>
+        </li>
+      </ul>
+      <h4 v-if="todos.length === 0">Pick Something To Do...</h4>
 
-<!-- ToDo List -->
-<h2>ToDo Bucket</h2>
-<ul>
-  <li
-    v-for="(todo, index) in todos"
-    :key="index"
-  >
+      <DoneList
+        :doneTodos="doneTodos"
+        @undo-todo="undoTodo"
+        @remove-done="removeDone"
+      />
+    </main>
 
-  <span
-    :class="{done: todo.done }"
-    @click="doneTodo(todo)"
-  >
-  {{ todo.content }}
-  </span>
-  <button @click="removeTodo(index)">Remove</button>
-
-  </li>
-</ul>
-
-<!-- Indicate Empty List -->
- <h4
- v-if="todos.length === 0"
- >Pick Something To Do...</h4>
-
-
+  
+  </div>
+ 
 </template>
 
 
@@ -51,16 +49,20 @@
 
 import { ref } from 'vue'
 
+import DoneList from './components/DoneList.vue';
+import ClockWidget from './components/ClockWidget.vue';
+
+
 const newTodo = ref('')
 const defaultTodoData = [{
   done: false,
   content: "Start with Bismillah."
 }]
 
-const todosData = JSON.parse(localStorage.getItem('todos')) || defaultTodoData;
+// Load todos and doneTodos from local storage
+const todos = ref(JSON.parse(localStorage.getItem('todos')) || defaultTodoData)
+const doneTodos = ref(JSON.parse(localStorage.getItem('doneTodos')) || [])
 
-// Set up todos list
-const todos = ref(todosData)
 
 // Function to insert new todos
 const addTodo = () => {
@@ -72,7 +74,7 @@ const addTodo = () => {
     newTodo.value = '' // Clear the input field
   }
   // invoke saveData() function here
-  SaveData()
+  saveData()
 }
 
 // doneTodo() function: Marked done after completing tod
@@ -95,8 +97,32 @@ const removeTodo = (index) =>{
 // then save in local storage
 
 const saveData = () => {
-  const storageData = JSON.stringify(todos.value);
-  localStorage.setItem('todos', storageData);
+  localStorage.setItem('todos', JSON.stringify(todos.value))
+  localStorage.setItem('doneTodos', JSON.stringify(doneTodos.value))
+}
+
+// Mark todo as done and to doneTodos
+const markDone = (index) => {
+  const todo = todos.value.splice(index, 1)[0]
+  todo.done = true
+  doneTodos.value.push(todo)
+  // Save the Data
+  saveData()
+}
+
+const undoTodo = (todo) =>{
+  const index = doneTodos.value.indexOf(todo)
+  if(index !== -1){
+    doneTodos.value.splice(index, 1)
+    todo.done = false
+    todos.value.push(todo)
+    saveData()
+  }
+}
+
+const removeDone = (index) => {
+  doneTodos.value.splice(index, 1)
+  saveData()
 }
 
 </script>
