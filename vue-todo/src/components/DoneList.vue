@@ -22,7 +22,8 @@
         </li>
       </ul>
 
-      <h4 v-if="doneTodos.length === 0">
+      <h4 
+        v-if="doneTodos.length === 0">
         Pick and Do Something Fills Up This List
       </h4>
     </div>
@@ -31,7 +32,7 @@
 
 <script setup>
 // Import ref, watch, defineProps, defineEmits from vue
-import { ref, watch, defineProps, defineEmits } from "vue";
+import { ref } from "vue";
 
 const props = defineProps({
   doneTodos: Array,
