@@ -63,17 +63,55 @@ body {
   border: var(--border);
   color: inherit;
 }
-/*
-#app button {
-  cursor: pointer;
-  background-color: var(--primaryColor);
-  border: 1px solid var(--primaryColor);
-  color: var(--secondTextColor);
-  font-weight: bold;
-  outline: none;
+
+/* ToDo List Item Layout */
+#app ul li,
+#done-list ul li {
+  display: flex;
+  align-items: center;
+  border: var(--border);
+  padding: var(--size2) var(--size4);
   border-radius: var(--size1);
+  margin-bottom: var(--size2);
+  background: #2d2f36;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
-*/
+
+/* Content spans take all available space */
+#app ul li span,
+#done-list ul li span {
+  flex: 1 1 auto;
+  word-break: break-word;
+  min-width: 0;
+  margin-right: var(--size2);
+}
+
+/* Button group stays fixed width and aligned */
+.todo-btn-group,
+.done-btn-group {
+  display: flex;
+  flex: 0 0 auto;
+  gap: var(--size1);
+}
+
+/* Responsive: stack buttons on small screens */
+@media (max-width: 600px) {
+  .todo-btn-group,
+  .done-btn-group {
+    flex-direction: column;
+    gap: var(--size1);
+  }
+  #app ul li,
+  #done-list ul li {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  #app ul li span,
+  #done-list ul li span {
+    margin-bottom: var(--size1);
+  }
+}
+
 
 #app h2 {
   font-size: 22px;
@@ -456,120 +494,3 @@ body {
   font-size: 0.95em;
   opacity: 0.7;
 }
-
-/* Calendar Widget */
-.calendar-widget {
-  background: #23242a;
-  border-radius: var(--size1);
-  padding: var(--size3);
-  color: #fff;
-  text-align: center;
-  margin-bottom: 1vw;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-.calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: bold;
-  margin-bottom: 0.5em;
-}
-.calendar-header button {
-  background: var(--primaryColor);
-  color: var(--secondTextColor);
-  border: none;
-  border-radius: var(--size1);
-  padding: 0.3em 1em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.calendar-header button:hover {
-  background: #b3b7e6;
-}
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 0.2em;
-}
-.calendar-day {
-  font-weight: bold;
-  opacity: 0.8;
-  padding: 0.2em 0;
-}
-.calendar-cell {
-  padding: 0.5em 0;
-  border-radius: var(--size1);
-  cursor: pointer;
-  background: #2d2f36;
-  transition: background 0.2s, color 0.2s;
-}
-.calendar-cell.today {
-  background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
-  color: #1f2023;
-  font-weight: bold;
-}
-.calendar-cell:hover {
-  background: #b3b7e6;
-  color: #1f2023;
-}
-.calendar-cell.empty {
-  background: transparent;
-  cursor: default;
-}
-
-/* Pomodoro Widget */
-.pomodoro-widget {
-  background: #23242a;
-  border-radius: var(--size1);
-  padding: var(--size3);
-  color: #fff;
-  text-align: center;
-  min-width: 260px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-.pomodoro-widget .timer-label {
-  font-size: 1.1em;
-  font-weight: bold;
-  margin-bottom: 0.2em;
-}
-.pomodoro-widget .timer {
-  font-size: 2.2em;
-  font-weight: bold;
-  margin-bottom: 0.5em;
-}
-.pomodoro-widget .controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5em;
-  justify-content: center;
-  margin-bottom: 0.5em;
-}
-.pomodoro-widget button {
-  background: linear-gradient(90deg, #f7971e 0%, #ffd200 100%);
-  color: #1f2023;
-  border: none;
-  border-radius: var(--size1);
-  padding: 0.3em 1em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s, color 0.2s, transform 0.2s;
-}
-.pomodoro-widget button:hover {
-  background: linear-gradient(270deg, #f7971e 0%, #ffd200 100%);
-  color: #fff;
-  transform: scale(1.05);
-}
-.pomodoro-widget input[type="number"] {
-  width: 60px;
-  border-radius: var(--size1);
-  border: 1px solid #b3b7e6;
-  padding: 0.2em 0.5em;
-  margin-left: 0.5em;
-  font-size: 1em;
-}
-.pomodoro-widget .pomodoros {
-  font-size: 1em;
-  opacity: 0.7;
-}
-

@@ -13,9 +13,9 @@
 
       <ul>
         <li v-for="(todo, index) in doneTodos" :key="index">
-          <span>{{ todo.content }}</span>
+          <span v-html="todo.content"></span>
           <!-- Undo and remove button -->
-          <div>
+          <div class="done-btn-group">
             <button class="undo-btn" @click="undoTodo(todo)">Undo</button>
             <button class="remove-btn" @click="removeDone(index)">Remove</button>
           </div>

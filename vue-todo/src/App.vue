@@ -23,7 +23,7 @@
       <ul>
         <li v-for="(todo, index) in todos" :key="index">
           <span :class="{done: todo.done }">{{ todo.content }}</span>
-          <div>
+          <div class="todo-btn-group">
             <button @click="markDone(index)">Done</button>
             <button @click="removeTodo(index)">Remove</button>
           </div>
